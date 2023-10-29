@@ -18,6 +18,8 @@ A companion library written in Python is supplied in [python/lib](python/lib).
 #include <Arduino.h>
 #include <serialftp.h>
 
+SerialFTP sftp;
+
 void setup() {
     Serial.begin();
     sftp.begin();
