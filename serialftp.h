@@ -4,6 +4,7 @@
  * TODO:
  * - allow changing start/end words (default XFS/XSE)
  * - use checksum also for file upload
+ * - add standalone tools for file upload / download
  */
 
 #pragma once

@@ -3,6 +3,11 @@
 `serialftp` can be used as a way to carry out simple file transfer operations
 over a serial connection to a microcontroller's flash memory.
 
+The aim of this project is not to have full-fledged access to any file system via a microcontroller, but to provide the bare minimum needed to get a file in or out.
+
+For more advanced use cases other projects exist, such as:
+- [serialtransfer](https://www.arduino.cc/reference/en/libraries/serialtransfer/)
+
 
 ## Examples
 
