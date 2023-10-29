@@ -40,29 +40,30 @@ s.rm("hello")
 s.end()
 ```
 
-## Supported operations
+## Supported
+
+### Operations
 
 - ls
 - get
 - put
 - rm
 
-## Supported file systems
+### File systems
 
 - LittleFS
 
+### Hardware
+
+`serialftp` is tested on
+
+- Raspberry Pi Pico / Pico W (earlephilhower/arduino-pico)
 
 ## Dependencies
 
 - Arduino framework
 - LittleFS
 
-
-## Supported hardware
-
-`serialftp` is tested on
-
-- Raspberry Pi Pico / Pico W (earlephilhower/arduino-pico)
 
 ## License
 
