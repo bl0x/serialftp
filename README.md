@@ -8,6 +8,7 @@ The aim of this project is not to have full-fledged access to any file system vi
 For more advanced use cases other projects exist, such as:
 - [serialtransfer](https://www.arduino.cc/reference/en/libraries/serialtransfer/)
 
+A companion library written in Python is supplied in [python/lib](python/lib).
 
 ## Examples
 
