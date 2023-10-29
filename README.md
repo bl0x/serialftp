@@ -9,6 +9,7 @@ over a serial connection to a microcontroller's flash memory.
 ### Arduino
 
 ```c
+#include <Arduino.h>
 #include <serialftp.h>
 
 void setup() {
@@ -25,10 +26,13 @@ void loop() {
 
 ```python
 import serialftp
+
 s = serialftp.SerialFTP()
-s.begin()
+
 with open("/tmp/hello", "w") as f:
     f.write("Hello world!\n")
+
+s.begin()
 s.put("/tmp/hello", "hello")
 s.get("hello", "/tmp/hello.read")
 s.list_files()
@@ -58,11 +62,11 @@ s.end()
 
 `serialftp` is tested on
 
-- Raspberry Pi Pico / Pico W
+- Raspberry Pi Pico / Pico W (earlephilhower/arduino-pico)
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 
 ## Authors:
