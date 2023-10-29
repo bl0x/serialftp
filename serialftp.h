@@ -5,6 +5,8 @@
  * - allow changing start/end words (default XFS/XSE)
  * - use checksum also for file upload
  * - add standalone tools for file upload / download
+ * - don't limit to using only Serial
+ * - provide way to use second serial port for messages
  */
 
 #pragma once

@@ -73,6 +73,7 @@ and only with small files (<1 kByte).
 - File names are limited to these characters: `[a-z][A-Z][0-9]._-/`
 - No empty directories (because of LittleFS)
 - `run` function is not very flexible
+- used serial port is `Serial`
 
 
 ## Dependencies
