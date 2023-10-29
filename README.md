@@ -116,8 +116,11 @@ output: "Wrote " SIZE " bytes to file '" PATH "'"
 
 `FILENAME` is the path and name of the file in the flash memory.
 In case `FILENAME` fails validation, instead of `"OKGO"`, an error message is returned and the `put` operation is cancelled.
+
 `DATA` is the content of the file to be written. `DATA` is followed by the EOT (end-of-transmission) character (`0x04` or Ctrl-D).
+
 `SIZE` is the size of the file content on flash memory.
+
 `PATH` is the path, where the file is stored and can be accessed from.
 
 `PATH` should be equal to `FILENAME`.
