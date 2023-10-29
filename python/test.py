@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: MIT
 
 import lib.serialftp
 s = lib.serialftp.SerialFTP()
