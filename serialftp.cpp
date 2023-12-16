@@ -14,7 +14,7 @@ SerialFTP::set_cwd(const char *buf, size_t len)
 {
 	size_t final_len;
 	if (len < SERIALFTP_MAX_PATH_LEN) {
-		final_len = snprintf(cwd, SERIALFTP_MAX_PATH_LEN, "/");
+		final_len = snprintf(cwd, SERIALFTP_MAX_PATH_LEN, "%s", buf);
 		if (final_len >= 0) {
 			cwd_len = final_len;
 		} else {
@@ -61,8 +61,10 @@ void
 SerialFTP::ls()
 {
 	Dir d;
-	d = LittleFS.openDir("/");
-	Serial.println("Listing '/':\n");
+	d = LittleFS.openDir(cwd);
+	Serial.print("Listing '");
+	Serial.print(cwd);
+	Serial.println("':\n");
 	while (d.next()) {
 		//Serial.print("name: ");
 		auto name = d.fileName();
@@ -114,7 +116,9 @@ SerialFTP::mkpath(char *buf, size_t len, char *path, size_t pathlen)
 		Serial.println("Path too long.");
 		return false;
 	}
-	if (len > 1 && buf[0] == '/') {
+	if (len == 1 && buf[0] == '/') {
+		snprintf(path, SERIALFTP_MAX_PATH_LEN, "%s", buf);
+	} else if (len > 1 && buf[0] == '/') {
 		snprintf(path, SERIALFTP_MAX_PATH_LEN, "%s", buf);
 	} else if (cwd_len >= 1 && cwd[cwd_len - 1] == '/') {
 		snprintf(path, SERIALFTP_MAX_PATH_LEN, "%s%s", cwd, buf);
@@ -247,6 +251,41 @@ SerialFTP::rm(char *buf, size_t len)
 }
 
 void
+SerialFTP::cd(char *buf, size_t len)
+{
+	File f;
+	char path[SERIALFTP_MAX_PATH_LEN];
+	bool ok;
+
+	/*
+	Serial.print("cd(");
+	Serial.print(buf);
+	Serial.println(")");
+	*/
+
+	ok = mkpath(buf, len, path, SERIALFTP_MAX_PATH_LEN);
+	if (!ok) {
+		return;
+	}
+
+	if (!LittleFS.exists(path)) {
+		Serial.print("File '");
+		Serial.print(path);
+		Serial.println("' does not exist.");
+		return;
+	} else {
+		/*
+		Serial.print("Changing directory to '");
+		Serial.print(path);
+		Serial.println("'.");
+		*/
+	}
+
+	set_cwd(path, strlen(path));
+	Serial.println("OK");
+}
+
+void
 SerialFTP::get(char *buf, size_t len)
 {
 	File f;
@@ -323,6 +362,15 @@ SerialFTP::handle_line(char *buf, size_t len)
 			get(arg_buf, arg_len);
 		} else {
 			Serial.println("get requires an argument.");
+		}
+	} else if (strncmp(buf, "cd", 2) == 0) {
+		size_t min_len = 3;
+		char *arg_buf = &buf[min_len];
+		if (len > min_len) {
+			size_t arg_len = strlen(arg_buf);
+			cd(arg_buf, arg_len);
+		} else {
+			Serial.println("cd requires an argument.");
 		}
 	} else if (strncmp(buf, "rm", 2) == 0) {
 		size_t min_len = 3;

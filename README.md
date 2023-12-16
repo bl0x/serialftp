@@ -48,11 +48,22 @@ s.rm("hello")
 s.end()
 ```
 
+### Bash
+
+```bash
+./ls.py              # List root directory
+./ls.py dir          # List 'dir'
+./get.py file dest   # Copy remote 'file' to local 'dest'
+./put.py file dest   # Copy local 'file' to remote 'dest'
+./rm.py file         # Remove remote 'file'
+```
+
 ## Supported
 
 ### Operations
 
 - ls
+- cd
 - get
 - put
 - rm
@@ -77,6 +88,7 @@ and only with small files (<1 kByte).
 - No empty directories (because of LittleFS)
 - `run` function is not very flexible
 - used serial port is `Serial`
+- `cd` does not support `..` for entering the parent directory
 
 
 ## Dependencies

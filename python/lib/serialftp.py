@@ -3,17 +3,19 @@
 import serial
 import time
 
+wait_read = 0.5
+
 class SerialFTP:
     def __init__(self, dev="/dev/ttyACM0", baudrate=115200):
         self.dev = dev
         self.baudrate = baudrate
-        self.s = serial.Serial(dev, baudrate, timeout=1000)
+        self.s = serial.Serial(dev, baudrate, timeout=3000)
 
     def get(self, src, dest):
         print(f"$ get {src}")
         self.s.write(b"get " + bytes(src,"ascii") + b"\n")
 
-        time.sleep(0.01)
+        time.sleep(wait_read)
 
         f = None
 
@@ -76,7 +78,7 @@ class SerialFTP:
     def begin(self):
         print("Switch to FS mode")
         self.s.write(b"XFS\n")
-        time.sleep(0.01)
+        time.sleep(wait_read)
         while self.s.in_waiting > 0:
             data = self.s.read_until()
             if data == b"Switch to FS mode.\r\n":
@@ -88,14 +90,23 @@ class SerialFTP:
         self.s.write(b"XSE\n")
         data = self.s.readline()
 
+    def cd(self, path):
+        self.s.write(b"cd " + bytes(path, "ascii") + b"\n")
+
+        while True:
+            data = self.s.read_until().strip()
+            if data == b"OK":
+                break
+
     def ls(self):
         files = []
         print("$ ls")
         self.s.write(b"ls\n");
-        time.sleep(0.01)
+        time.sleep(wait_read)
         while self.s.in_waiting > 0:
             data = self.s.read_until()
             if data == b"Listing '/':\n":
+                print(data.decode('ascii').strip())
                 one = 1
             else:
                 fields = data.decode('ascii').strip().split()
@@ -103,8 +114,10 @@ class SerialFTP:
                     name, size = fields
                     # print(f"{name}\t{size}")
                     files.append({"name": name, "size": size})
-                # else:
-                    # print(fields)
+                elif len(fields) == 1:
+                    name = fields[0]
+                    files.append({"name": name, "size": "(directory)"})
+            time.sleep(0.5)
         time.sleep(0.1)
         return files
 
@@ -132,11 +145,11 @@ class SerialFTP:
         print(f"$ put {src}")
         self.s.write(b"put " + bytes(dest, "ascii") + b"\n")
 
-        time.sleep(0.01)
+        time.sleep(wait_read)
 
         while True:
             data = self.s.read_until().strip()
-            print(data)
+            print(data.decode('ascii'))
             if data == b"OKGO":
                 break
 
@@ -145,7 +158,7 @@ class SerialFTP:
 
         time.sleep(0.1)
         data = self.s.read_until()
-        print(data)
+        print(data.decode('ascii').strip())
 
 
     def list_files(self):

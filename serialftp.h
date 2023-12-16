@@ -26,6 +26,7 @@ struct SerialFTP
 	void ls(void);
 	void help(void);
 	void put(char *buf, size_t len);
+	void cd(char *buf, size_t len);
 	void rm(char *buf, size_t len);
 	void get(char *buf, size_t len);
 	void loop(char *buf, size_t len);
